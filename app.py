@@ -30,21 +30,27 @@ def query():
             'page.</h1>')
 
 
-@app.route('/theform')
+@app.route('/theform', methods=['GET', 'POST'])
 def theform():
-    return ('<form method="POST" action="/process">'
-            '<input type="text" name="name">'
-            '<input type="text" name="location">'
-            '<input type="submit" value="Submit">'
-            '</form>')
+    if request.method == 'GET':
+        return ('<form method="POST" action="/theform">'
+                '<input type="text" name="name">'
+                '<input type="text" name="location">'
+                '<input type="submit" value="Submit">'
+                '</form>')
+    else:
+        name = request.form['name']
+        location = request.form['location']
+        return (f'<h1>Hi {name}, you are from {location}. You have submitted '
+                'the form successfully!</h1>')
 
 
-@app.route('/process', methods=['POST'])
-def process():
-    name = request.form['name']
-    location = request.form['location']
-    return (f'<h1>Hi {name}, you are from {location}. You have submitted the '
-            'form successfully!</h1>')
+# @app.route('/process', methods=['POST'])
+# def process():
+#     name = request.form['name']
+#     location = request.form['location']
+#     return (f'<h1>Hi {name}, you are from {location}. You have submitted the'
+#             ' form successfully!</h1>')
 
 
 @app.route('/processjson', methods=['POST'])
