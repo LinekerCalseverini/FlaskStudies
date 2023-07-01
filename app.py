@@ -1,10 +1,18 @@
-from flask import Flask, jsonify, request, url_for, redirect
+from flask import (Flask, jsonify, request, url_for, redirect, session,
+                   render_template)
+from pathlib import Path
+
+ROOT_FOLDER = Path(__file__).parent
 
 app = Flask(__name__)
+
+app.config['DEBUG'] = True
+app.config['SECRET_KEY'] = 'Thisisasecret!'
 
 
 @app.route('/')
 def index():
+    session.pop('name', None)
     return '<h1>Hello, World!</h1>'
 
 
@@ -14,12 +22,16 @@ def personal_home(name):
     if not name:
         return '<h1>You are on the home page!</h1>'
 
+    session['name'] = name
     return f'<h1>Hello, {name}. You are on the home page!</h1>'
 
 
 @app.route('/json')
 def json():
-    return jsonify({'key': 'value', 'key2': [1, 2, 3]})
+    json_object = {'key': 'value', 'key2': [1, 2, 3]}
+    if 'name' in session:
+        json_object['name'] = session['name']
+    return jsonify(json_object)
 
 
 @app.route('/query')
@@ -33,11 +45,7 @@ def query():
 @app.route('/theform', methods=['GET', 'POST'])
 def theform():
     if request.method == 'GET':
-        return ('<form method="POST" action="/theform">'
-                '<input type="text" name="name">'
-                '<input type="text" name="location">'
-                '<input type="submit" value="Submit">'
-                '</form>')
+        return render_template('form.html')
     else:
         name = request.form['name']
         # location = request.form['location']
@@ -63,3 +71,7 @@ def processjson():
     return jsonify({'result': 'Success',
                     'name': name,
                     'location': location})
+
+
+if __name__ == '__main__':
+    app.run(port=80)
