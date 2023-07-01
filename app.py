@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, url_for, redirect
 
 app = Flask(__name__)
 
@@ -9,7 +9,7 @@ def index():
 
 
 @app.route('/home', methods=['POST', 'GET'], defaults={'name': ''})
-@app.route('/home/<name>', methods=['POST', 'GET'])
+@app.route('/home/<string:name>', methods=['POST', 'GET'])
 def personal_home(name):
     if not name:
         return '<h1>You are on the home page!</h1>'
@@ -40,9 +40,11 @@ def theform():
                 '</form>')
     else:
         name = request.form['name']
-        location = request.form['location']
-        return (f'<h1>Hi {name}, you are from {location}. You have submitted '
-                'the form successfully!</h1>')
+        # location = request.form['location']
+        # return (f'<h1>Hi {name}, you are from {location}. You have submitted'
+        #         ' the form successfully!</h1>')
+
+        return redirect(url_for('personal_home', name=name))
 
 
 # @app.route('/process', methods=['POST'])
