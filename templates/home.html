@@ -10,6 +10,11 @@
 
 <body>
     <h1>Hello, {{ name }}. You are on the home page!</h1>
+    {% if display %}
+    <h2>This is being displayed!</h2>
+    {% else %}
+    <h2>This is not being displayed!</h2>
+    {% endif %}
 </body>
 
 </html>

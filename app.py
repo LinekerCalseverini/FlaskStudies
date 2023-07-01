@@ -23,7 +23,7 @@ def personal_home(name):
         return '<h1>You are on the home page!</h1>'
 
     session['name'] = name
-    return render_template('home.html', name=name)
+    return render_template('home.html', name=name, display=True)
 
 
 @app.route('/json')
