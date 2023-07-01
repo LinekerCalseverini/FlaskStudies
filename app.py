@@ -23,7 +23,14 @@ def personal_home(name):
         return '<h1>You are on the home page!</h1>'
 
     session['name'] = name
-    return render_template('home.html', name=name, display=True)
+    mylist = ['one', 'two', 'three', 'four']
+    listofdictionaries = [{'name': 'Zach'},
+                          {'name': 'Zoe'}]
+    return render_template('home.html',
+                           name=name,
+                           display=True,
+                           mylist=mylist,
+                           listofdictionaries=listofdictionaries)
 
 
 @app.route('/json')
